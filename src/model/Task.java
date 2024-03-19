@@ -1,3 +1,5 @@
+package model;
+
 public class Task {
     public String name;
     public String description;
