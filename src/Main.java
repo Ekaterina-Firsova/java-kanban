@@ -1,7 +1,6 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Main {
-//https://practicum.yandex.ru/trainer/java-developer/lesson/f7e719dd-ded6-4181-bf88-31f0b5842c29/
     public static void main(String[] args) {
 
         System.out.println("Поехали!");
@@ -11,22 +10,22 @@ public class Main {
         TaskManager manager = new TaskManager();
 
         Task task = new Task("Покупка", "Купить молока");
-        objectId = manager.addTask(task, TaskStatus.IN_PROGRESS);
+        Task newTask = manager.addTask(task, TaskStatus.IN_PROGRESS);
 
         Task task2 = new Task("Покупка", "Купить хлеб");
-        objectId = manager.addTask(task2, TaskStatus.IN_PROGRESS);
+        Task newTask2 = manager.addTask(task2, TaskStatus.IN_PROGRESS);
 
         Epic epic = new Epic("Переезд", "Организуем переезд офиса");
-        objectId = manager.addEpic(epic);
+        Epic newEpic = manager.addEpic(epic);
         Epic epic1 = new Epic("Расстановка", "Организуем переезд офиса");
-        objectId = manager.addEpic(epic1);
+        Epic newEpic1 = manager.addEpic(epic1);
 
         Subtask subTask = new Subtask("Вять стулья", "Вять стулья", 3);
-        objectId = manager.addSubTask(subTask, TaskStatus.NEW);
+        Subtask newSubTask = manager.addSubTask(subTask, TaskStatus.NEW);
         Subtask subTask1 = new Subtask("Вять столы", "", 3);
-        objectId = manager.addSubTask(subTask1, TaskStatus.NEW);
+        Subtask newSubTask1 = manager.addSubTask(subTask1, TaskStatus.NEW);
         Subtask subTask3 = new Subtask("Вять шкафы", "Шкафы брать только из опенспейса", 3);
-        objectId = manager.addSubTask(subTask3, TaskStatus.NEW);
+        Subtask newSubTask3 = manager.addSubTask(subTask3, TaskStatus.NEW);
 
         System.out.println(manager.getById(4));
 
@@ -38,18 +37,19 @@ public class Main {
         manager.changeStatus(4, TaskStatus.DONE);
         manager.changeStatus(5, TaskStatus.DONE);
 
+        ArrayList<Object> EpicsSubtasks = manager.getEpicsSubtasks(3);
+
         manager.deleteId(5);
 
-        HashMap<Integer, Task> allTaskManager = manager.getAllTaskManager();
-        HashMap<Integer, Task> allTasks = manager.getAllTasks();
-        HashMap<Integer, Epic> allEpics = manager.getAllEpics();
-        HashMap<Integer, Subtask> allSubtasks = manager.getAllSubTasks();
+        ArrayList<Object> allTaskManager = manager.getAllTaskManager();
+        ArrayList<Object>allTasks = manager.getAllTasks();
+        ArrayList<Object> allEpics = manager.getAllEpics();
+        ArrayList<Object> allSubtasks = manager.getAllSubTasks();
 
-        //manager.deleteAllTasks();
-        //manager.deleteAllEpics();
-        //manager.deleteAllSubtask();
+        manager.deleteAllTasks();
+        manager.deleteAllEpics();
+        manager.deleteAllSubtask();
 
-        //manager.getAllEpics();
         manager.printAll();
     }
 }
