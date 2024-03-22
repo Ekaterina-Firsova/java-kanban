@@ -23,7 +23,7 @@ public class TaskManager {
 
     public Task addTask(Task task, TaskStatus taskStatus) {
         ++id;
-        task.taskStatus = taskStatus;
+        task.setTaskStatus(taskStatus);
         tasks.put(id, task);
 
         return task;
@@ -38,13 +38,13 @@ public class TaskManager {
     }
 
     public Subtask addSubTask(Subtask subtask, TaskStatus taskStatus) {
-        if (!isId(subtask.epicId)) return null; //если эпика нет, то подзадание не добавляем
-        if (!isEpic(subtask.epicId)) return null; //если не эпик, не добавляем
+        if (!isId(subtask.getEpicId())) return null; //если эпика нет, то подзадание не добавляем
+        if (!isEpic(subtask.getEpicId())) return null; //если не эпик, не добавляем
         ++id;
-        subtask.taskStatus = taskStatus;
+        subtask.setTaskStatus(taskStatus);
         tasks.put(id, subtask);
-        TaskStatus newEpicStatus = changeEpicStatus(subtask.epicId);
-        setEpicStatus(newEpicStatus, subtask.epicId);
+        TaskStatus newEpicStatus = changeEpicStatus(subtask.getEpicId());
+        setEpicStatus(newEpicStatus, subtask.getEpicId());
         return subtask;
     }
 
@@ -63,13 +63,13 @@ public class TaskManager {
 
         for (Object object : tasks.values()) {
             if (object instanceof Subtask subTask) {
-                if (!Objects.equals(subTask.epicId, epicId)) continue;
+                if (!Objects.equals(subTask.getEpicId(), epicId)) continue;
 
-                if (subTask.taskStatus != TaskStatus.DONE) {
+                if (subTask.getTaskStatus() != TaskStatus.DONE) {
                     allDone = false;
                     continue;
                 }
-                if (subTask.taskStatus != TaskStatus.NEW) {
+                if (subTask.getTaskStatus() != TaskStatus.NEW) {
                     allNew = false;
                     continue;
                 }
@@ -91,7 +91,7 @@ public class TaskManager {
 
     protected void setEpicStatus(TaskStatus newEpicStatus, Integer epicId) {
         Task epic = tasks.get(epicId);
-        epic.taskStatus = newEpicStatus;
+        epic.setTaskStatus(newEpicStatus);
     }
 
     public void update(Integer id, Object object) {
@@ -99,23 +99,23 @@ public class TaskManager {
             Subtask newTask = (Subtask) object;
             Subtask task = (Subtask) tasks.get(id);
 
-            if (!isId(newTask.epicId)) return; //если эпика нет, то подзадание не изменяем
-            if (!isEpic(newTask.epicId)) return; //если новый id не эпик, не изменяем
+            if (!isId(newTask.getEpicId())) return; //если эпика нет, то подзадание не изменяем
+            if (!isEpic(newTask.getEpicId())) return; //если новый id не эпик, не изменяем
 
-            task.name = newTask.name;
-            task.description = newTask.description;
-            task.epicId = newTask.epicId;
+            task.setName(newTask.getName());
+            task.setDescription(newTask.getDescription());
+            task.setEpicId(newTask.getEpicId());
         } else if (object instanceof Epic) {
             Epic newTask = (Epic) object;
             Epic task = (Epic) tasks.get(id);
-            task.name = newTask.name;
-            task.description = newTask.description;
+            task.setName(newTask.getName());
+            task.setDescription(newTask.getDescription());
         } else if (object instanceof Task) {
             Task newTask = (Task) object;
             Task task = tasks.get(id);
 
-            task.name = newTask.name;
-            task.description = newTask.description;
+            task.setName(newTask.getName());
+            task.setDescription(newTask.getDescription());
         }
     }
 
@@ -126,12 +126,12 @@ public class TaskManager {
         }
         if (object instanceof Subtask) {
             Subtask task = (Subtask) object;
-            task.taskStatus = status;
-            TaskStatus newEpicStatus = changeEpicStatus(task.epicId);
-            setEpicStatus(newEpicStatus, task.epicId);
+            task.setTaskStatus(status);
+            TaskStatus newEpicStatus = changeEpicStatus(task.getEpicId());
+            setEpicStatus(newEpicStatus, task.getEpicId());
         } else if (object instanceof Task) {
             Task task = (Task) object;
-            task.taskStatus = status;
+            task.setTaskStatus(status);
         }
     }
 
@@ -181,7 +181,7 @@ public class TaskManager {
         ArrayList<Object> taskList = new ArrayList<>();
         for (Object object : tasks.values()) {
             if (object instanceof Subtask) {
-                if (((Subtask) object).epicId.equals(epicId)) {
+                if (((Subtask) object).getEpicId().equals(epicId)) {
                     taskList.add(object);
                 }
             }
@@ -193,8 +193,8 @@ public class TaskManager {
         Object object = tasks.get(id);
         tasks.remove(id);
         if (object instanceof Subtask task) {
-            TaskStatus newEpicStatus = changeEpicStatus(task.epicId);
-            setEpicStatus(newEpicStatus, task.epicId);
+            TaskStatus newEpicStatus = changeEpicStatus(task.getEpicId());
+            setEpicStatus(newEpicStatus, task.getEpicId());
         }
     }
 
@@ -247,18 +247,18 @@ public class TaskManager {
             if (object instanceof Subtask task) {
                 message = object.getClass().getSimpleName() + "{" +
                         "id='" + key + '\'' +
-                        "name='" + task.name + '\'' +
-                        ", description='" + task.description + '\'' +
-                        ", taskStatus=" + task.taskStatus +
-                        ", epicId=" + task.epicId +
+                        "name='" + task.getName() + '\'' +
+                        ", description='" + task.getDescription() + '\'' +
+                        ", taskStatus=" + task.getTaskStatus() +
+                        ", epicId=" + task.getEpicId() +
                         '}';
             } else {
                 Task task = (Task) object;
                 message = object.getClass().getSimpleName() + "{" +
                         "id='" + key + '\'' +
-                        "name='" + task.name + '\'' +
-                        ", description='" + task.description + '\'' +
-                        ", taskStatus=" + task.taskStatus +
+                        "name='" + task.getName() + '\'' +
+                        ", description='" + task.getDescription() + '\'' +
+                        ", taskStatus=" + task.getTaskStatus() +
                         '}';
             }
             System.out.println(message);
