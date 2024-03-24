@@ -42,4 +42,8 @@ public class Task {
     public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
     }
+
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 }

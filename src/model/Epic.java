@@ -12,4 +12,7 @@ public class Epic extends Task{
     public void setStatus(TaskStatus status) {
         super.setTaskStatus(status);
     }
+    public TaskType getType() {
+        return TaskType.EPIC;
+    }
 }
